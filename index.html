@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jumping Game</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            background-color: #a7a7a7;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        #gameTitle {
+            font-size: 48px;
+            color: white;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+            margin-bottom: 10px;
+        }
+        #developerName {
+            font-size: 24px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            margin-bottom: 20px;
+        }
+        canvas {
+            border: 2px solid #000;
+        }
+        #score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+        #gameOver {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(14, 12, 12, 0.8);
+            color: rgb(255, 166, 0);
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+        }
+        #gameOver button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .soundControls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        .soundToggle {
+            margin: 5px 0;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: white;
+            border: none;
+            border-radius: 5px;
+            color: black;
+        }
+        #speedDisplay {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 18px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div id="gameTitle">Jumping Game</div>
+    <div id="developerName">Developer: Raphael König 👑</div>
+    <div id="score">Score: 0</div>
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
+    <div id="gameOver">
+        <h1>Verloren!</h1>
+        <p id="currentScore"></p>
+        <p id="highScore"></p>
+        <button onclick="restartGame()">Weiter spielen</button>
+    </div>
+    <div class="soundControls">
+        <button id="jumpSoundToggle" class="soundToggle" onclick="toggleJumpSound()">Jump Sound: An</button>
+        <button id="gameOverSoundToggle" class="soundToggle" onclick="toggleGameOverSound()">Game Over Sound: An</button>
+        <button id="bgMusicToggle" class="soundToggle" onclick="toggleBgMusic()">Musik: An</button>
+    </div>
+    <div id="speedDisplay">Speed: 5</div>
+    <audio id="jumpSound" src="jump.mp3"></audio>
+    <audio id="gameOverSound" src="gameover.mp3"></audio>
+    <audio id="bgMusic" src="backround_Music.mp3" loop></audio>
+    <script src="main.js"></script>
+</body>
+</html>
