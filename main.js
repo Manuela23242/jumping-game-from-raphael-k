@@ -229,50 +229,5 @@ function startGame() {
     update();
 }
 
-function saveHighScore(newScore, name) {
-    fetch('http://localhost:3000/highscores', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, score: newScore }),
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to save highscore');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log(data.message); // Optional: handle success message
-        updateLeaderboard();
-    })
-    .catch(error => {
-        console.error('Error saving highscore:', error);
-    });
-}
-
-function updateLeaderboard() {
-    fetch('http://localhost:3000/highscores')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to fetch highscores');
-        }
-        return response.json();
-    })
-    .then(highScores => {
-        leaderboardList.innerHTML = '';
-        highScores.forEach((entry, index) => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `${entry.name}: ${entry.score}`;
-            leaderboardList.appendChild(listItem);
-        });
-    })
-    .catch(error => {
-        console.error('Error fetching highscores:', error);
-    });
-}
-
-
 // Initialize the leaderboard
 updateLeaderboard();
