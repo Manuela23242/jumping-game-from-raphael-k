@@ -83,18 +83,51 @@
             color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
         }
+        #leaderboard {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            width: 200px;
+        }
+        #nameInputContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #nameInputContainer input {
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        #nameInputContainer button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div id="gameTitle">Jumping Game</div>
     <div id="developerName">Developer: Raphael König 👑</div>
     <div id="score">Score: 0</div>
-    <canvas id="gameCanvas" width="800" height="400"></canvas>
+    <canvas id="gameCanvas" width="800" height="400" style="display: none;"></canvas>
     <div id="gameOver">
         <h1>Verloren!</h1>
         <p id="currentScore"></p>
         <p id="highScore"></p>
         <button onclick="restartGame()">Weiter spielen</button>
+    </div>
+    <div id="leaderboard">
+        <h2>Leaderboard</h2>
+    </div>
+    <div id="nameInputContainer">
+        <input id="nameInput" type="text" placeholder="Dein Name">
+        <button onclick="startGame()">Spiel starten</button>
     </div>
     <div class="soundControls">
         <button id="jumpSoundToggle" class="soundToggle" onclick="toggleJumpSound()">Jump Sound: An</button>
