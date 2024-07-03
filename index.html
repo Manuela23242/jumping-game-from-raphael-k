@@ -122,9 +122,12 @@
         <p id="highScore"></p>
         <button onclick="restartGame()">Weiter spielen</button>
     </div>
-    <div id="leaderboard">
-        <h2>Leaderboard</h2>
-    </div>
+<div id="leaderboardContainer">
+    <h2>Leaderboard</h2>
+    <ol id="leaderboardList">
+        <!-- Hier werden die Einträge des Leaderboards dynamisch eingefügt -->
+    </ol>
+</div>
     <div id="nameInputContainer">
         <input type="text" id="nameInput" placeholder="Dein Name">
         <button id="startButton" onclick="startGame()">Start</button>
