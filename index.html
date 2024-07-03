@@ -168,6 +168,8 @@
         let playerWidth = 50; // Breite des Spielers
         let playerHeight = 50; // Höhe des Spielers
         let playerSpeedX = 5; // Geschwindigkeit des Spielers
+        let playerJumpPower = 15; // Sprungkraft des Spielers
+        let playerIsJumping = false; // Zustand, ob der Spieler gerade springt
 
         // Hindernisse
         let obstacles = [];
@@ -175,6 +177,16 @@
         // Event Listener für den Start-Button
         const startButton = document.getElementById('startButton');
         startButton.addEventListener('click', startGame);
+
+        // Event Listener für die Leertaste (Springen)
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space') {
+                if (!playerIsJumping) {
+                    playerIsJumping = true;
+                    jump();
+                }
+            }
+        });
 
         function startGame() {
             playerName = nameInput.value.trim() || 'Anonymous';
@@ -218,7 +230,19 @@
 
         // Funktion zum Bewegen des Spielers
         function movePlayer() {
-            // Beispiel: Spieler bewegt sich nach rechts
+            // Spieler springt
+            if (playerIsJumping) {
+                playerY -= playerJumpPower;
+                if (playerY < 200) { // Höhe des Sprungs begrenzen
+                    playerJumpPower = -playerJumpPower; // Sprung umkehren
+                }
+                if (playerY >= 300) { // Spieler wieder am Boden
+                    playerY = 300;
+                    playerIsJumping = false;
+                    playerJumpPower = 15; // Ursprüngliche Sprungkraft wiederherstellen
+                }
+            }
+            // Spieler bewegt sich nach rechts
             playerX += playerSpeedX;
             if (playerX > canvas.width - playerWidth) {
                 playerX = canvas.width - playerWidth;
@@ -229,23 +253,24 @@
         function moveObstacles() {
             for (let obstacle of obstacles) {
                 obstacle.x -= playerSpeedX;
-                if (obstacle.x + obstacle.width < 0) {
-                    // Wenn Hindernis aus dem Bildschirm, zurücksetzen
-                    obstacle.x = canvas.width + Math.random() * 200;
+                if (obstacle.x + obstacle.width < 0) { // Hindernis außerhalb des Bildschirms
+                    obstacle.x = canvas.width + Math.random() * 200; // Neue Position rechts vom Bildschirmrand
                 }
             }
         }
 
-        // Funktion zum Zeichnen des Spielers und der Hindernisse
+        // Funktion zum Zeichnen des Spiels
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+
             // Zeichne Spieler
             ctx.fillStyle = 'blue';
-            ctx.fillRect(playerX, playerY, playerWidth, playerHeight);
+            ctx.fillRect(playerX, playerY - playerHeight, playerWidth, playerHeight);
+
             // Zeichne Hindernisse
             ctx.fillStyle = 'red';
             for (let obstacle of obstacles) {
-                ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+                ctx.fillRect(obstacle.x, obstacle.y - obstacle.height, obstacle.width, obstacle.height);
             }
         }
 
@@ -289,6 +314,12 @@
 
         function toggleBgMusic() {
             // Implementierung der Funktion hier...
+        }
+
+        // Funktion für den Sprung des Spielers
+        function jump() {
+            // Spieler springt nach oben
+            playerJumpPower = 15; // Sprungkraft
         }
     </script>
 </body>
