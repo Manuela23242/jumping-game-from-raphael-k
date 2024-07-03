@@ -163,6 +163,11 @@
         let playerName = '';
         let score = 0;
         let highScore = 0;
+        let playerX = 50; // Startposition X des Spielers
+        let playerY = 300; // Startposition Y des Spielers
+        let playerWidth = 50; // Breite des Spielers
+        let playerHeight = 50; // Höhe des Spielers
+        let playerSpeedX = 5; // Geschwindigkeit des Spielers
 
         // Event Listener für den Start-Button
         const startButton = document.getElementById('startButton');
@@ -187,7 +192,25 @@
         // Funktion zum Aktualisieren des Spiels
         function update() {
             // Logik für das Spiel-Update hier...
+            movePlayer();
+            drawPlayer();
             requestAnimationFrame(update);
+        }
+
+        // Funktion zum Bewegen des Spielers
+        function movePlayer() {
+            // Beispiel: Spieler bewegt sich nach rechts
+            playerX += playerSpeedX;
+            if (playerX > canvas.width - playerWidth) {
+                playerX = canvas.width - playerWidth;
+            }
+        }
+
+        // Funktion zum Zeichnen des Spielers
+        function drawPlayer() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'blue';
+            ctx.fillRect(playerX, playerY, playerWidth, playerHeight);
         }
 
         // Funktion zum Neustarten des Spiels
