@@ -24,7 +24,6 @@ let jumpSoundEnabled = true;
 let gameOverSoundEnabled = true;
 let bgMusicEnabled = true;
 let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
-let playerName = '';
 
 function initializeGame() {
     player = {
