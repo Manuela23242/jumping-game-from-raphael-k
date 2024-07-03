@@ -134,6 +134,18 @@ function update() {
     requestAnimationFrame(update);
 }
 
+const startButton = document.getElementById('startButton');
+startButton.addEventListener('click', startGame);
+
+function startGame() {
+    playerName = nameInput.value.trim() || 'Anonymous';
+    nameInputContainer.style.display = 'none';
+    canvas.style.display = 'block';
+    initializeGame();
+    update();
+}
+
+
 function saveHighScore(newScore, name) {
     // Check if the player is already in the high scores
     let existingPlayer = highScores.find(entry => entry.name === name);
