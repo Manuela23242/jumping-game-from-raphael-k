@@ -167,7 +167,7 @@
         let playerY = 300; // Startposition Y des Spielers
         let playerWidth = 50; // Breite des Spielers
         let playerHeight = 50; // Höhe des Spielers
-        let playerSpeedX = 5; // Geschwindigkeit des Spielers
+        let playerSpeedX = 0; // Horizontale Geschwindigkeit des Spielers
         let playerJumpPower = 15; // Sprungkraft des Spielers
         let playerIsJumping = false; // Zustand, ob der Spieler gerade springt
 
@@ -210,7 +210,7 @@
             // Beispiel: Erzeuge drei Hindernisse
             for (let i = 0; i < 3; i++) {
                 let obstacle = {
-                    x: 600 + i * 200, // Startposition X des Hindernisses
+                    x: canvas.width + i * 300, // Startposition X des Hindernisses
                     y: 300, // Startposition Y des Hindernisses
                     width: 50, // Breite des Hindernisses
                     height: 50 // Höhe des Hindernisses
@@ -242,17 +242,14 @@
                     playerJumpPower = 15; // Ursprüngliche Sprungkraft wiederherstellen
                 }
             }
-            // Spieler bewegt sich nach rechts
-            playerX += playerSpeedX;
-            if (playerX > canvas.width - playerWidth) {
-                playerX = canvas.width - playerWidth;
-            }
+            // Spieler bewegt sich nicht horizontal
+            playerSpeedX = 0;
         }
 
         // Funktion zum Bewegen der Hindernisse
         function moveObstacles() {
             for (let obstacle of obstacles) {
-                obstacle.x -= playerSpeedX;
+                obstacle.x -= 5; // Geschwindigkeit der Hindernisse
                 if (obstacle.x + obstacle.width < 0) { // Hindernis außerhalb des Bildschirms
                     obstacle.x = canvas.width + Math.random() * 200; // Neue Position rechts vom Bildschirmrand
                 }
