@@ -229,5 +229,69 @@ function startGame() {
     update();
 }
 
+// Frontend JavaScript (main.js)
+
+const leaderboardList = document.getElementById('leaderboardList');
+const nameInput = document.getElementById('nameInput');
+const startButton = document.getElementById('startButton');
+const leaderboardContainer = document.getElementById('leaderboardContainer');
+
+let playerName = '';
+
+startButton.addEventListener('click', startGame);
+
+function startGame() {
+    playerName = nameInput.value.trim() || 'Anonymous';
+    nameInputContainer.style.display = 'none';
+    canvas.style.display = 'block';
+    initializeGame();
+    update();
+}
+
+function saveHighScore(newScore, name) {
+    fetch('http://localhost:3000/highscores', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, score: newScore }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to save highscore');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data.message); // Optional: handle success message
+        updateLeaderboard();
+    })
+    .catch(error => {
+        console.error('Error saving highscore:', error);
+    });
+}
+
+function updateLeaderboard() {
+    fetch('http://localhost:3000/highscores')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to fetch highscores');
+        }
+        return response.json();
+    })
+    .then(highScores => {
+        leaderboardList.innerHTML = '';
+        highScores.forEach((entry, index) => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${entry.name}: ${entry.score}`;
+            leaderboardList.appendChild(listItem);
+        });
+    })
+    .catch(error => {
+        console.error('Error fetching highscores:', error);
+    });
+}
+
+
 // Initialize the leaderboard
 updateLeaderboard();
