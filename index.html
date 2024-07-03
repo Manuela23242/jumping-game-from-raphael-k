@@ -97,6 +97,7 @@
         #leaderboardList {
             list-style-type: none;
             padding: 0;
+            margin: 0;
         }
         #leaderboardList li {
             margin-bottom: 5px;
@@ -116,21 +117,13 @@
             font-size: 16px;
             cursor: pointer;
         }
-        #leaderboard {
-            margin-top: 20px;
-            border: 2px solid black;
-            padding: 10px;
-            max-width: 300px;
-            background-color: #f0f0f0;
-            border-radius: 5px;
-        }
     </style>
 </head>
 <body>
     <div id="gameTitle">Jumping Game</div>
     <div id="developerName">Developer: Raphael König 👑</div>
     <div id="score">Score: 0</div>
-    <canvas id="gameCanvas" width="800" height="400" style="display: none;"></canvas>
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
     <div id="gameOver">
         <h1>Verloren!</h1>
         <p id="currentScore"></p>
@@ -153,9 +146,6 @@
         <button id="bgMusicToggle" class="soundToggle" onclick="toggleBgMusic()">Musik: An</button>
     </div>
     <div id="speedDisplay">Speed: 5</div>
-    <audio id="jumpSound" src="jump.mp3"></audio>
-    <audio id="gameOverSound" src="gameover.mp3"></audio>
-    <audio id="bgMusic" src="backround_Music.mp3" loop></audio>
 
     <script>
         // JavaScript für das Spiel und das Leaderboard
