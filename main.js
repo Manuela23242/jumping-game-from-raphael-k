@@ -11,10 +11,11 @@ const jumpSoundToggle = document.getElementById('jumpSoundToggle');
 const gameOverSoundToggle = document.getElementById('gameOverSoundToggle');
 const bgMusicToggle = document.getElementById('bgMusicToggle');
 const speedDisplay = document.getElementById('speedDisplay');
-const leaderboard = document.getElementById('leaderboard');
+const leaderboardList = document.getElementById('leaderboardList');
 const nameInputContainer = document.getElementById('nameInputContainer');
 const nameInput = document.getElementById('nameInput');
 const startButton = document.getElementById('startButton');
+const leaderboardContainer = document.getElementById('leaderboardContainer');
 
 let player, obstacles, obstacleFrequency, frameCount, score, gameSpeed;
 let gameRunning = false;
@@ -154,13 +155,11 @@ function saveHighScore(newScore, name) {
 }
 
 function updateLeaderboard() {
-    leaderboard.innerHTML = '<h2>Leaderboard</h2>';
+    leaderboardList.innerHTML = '';
     highScores.forEach((entry, index) => {
-        if (index < 10) { // Only display up to 10 entries
-            const scoreElement = document.createElement('div');
-            scoreElement.textContent = `${index + 1}. ${entry.name}: ${entry.score}`;
-            leaderboard.appendChild(scoreElement);
-        }
+        const listItem = document.createElement('li');
+        listItem.textContent = `${entry.name}: ${entry.score}`;
+        leaderboardList.appendChild(listItem);
     });
 }
 
@@ -210,12 +209,6 @@ function toggleBgMusic() {
     } else {
         bgMusic.pause();
     }
-}
-
-function resetLeaderboard() {
-    highScores = [];
-    localStorage.setItem('highScores', JSON.stringify(highScores));
-    updateLeaderboard();
 }
 
 // Initialize the leaderboard
