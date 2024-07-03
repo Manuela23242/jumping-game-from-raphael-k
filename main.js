@@ -11,6 +11,10 @@ const jumpSoundToggle = document.getElementById('jumpSoundToggle');
 const gameOverSoundToggle = document.getElementById('gameOverSoundToggle');
 const bgMusicToggle = document.getElementById('bgMusicToggle');
 const speedDisplay = document.getElementById('speedDisplay');
+const leaderboard = document.getElementById('leaderboard');
+const nameInputContainer = document.getElementById('nameInputContainer');
+const nameInput = document.getElementById('nameInput');
+const startButton = document.getElementById('startButton');
 
 let player, obstacles, obstacleFrequency, frameCount, score, gameSpeed;
 let gameRunning = false;
@@ -18,6 +22,8 @@ let highScore = localStorage.getItem('highScore') || 0;
 let jumpSoundEnabled = true;
 let gameOverSoundEnabled = true;
 let bgMusicEnabled = true;
+let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+let playerName = '';
 
 function initializeGame() {
     player = {
@@ -105,6 +111,8 @@ function update() {
             gameRunning = false;
             gameOverOverlay.style.display = 'block';
             currentScoreDisplay.textContent = `Dein Score: ${score}`;
+            saveHighScore(score, playerName);
+            updateLeaderboard();
             if (score > highScore) {
                 highScore = score;
                 localStorage.setItem('highScore', highScore);
@@ -126,6 +134,36 @@ function update() {
     requestAnimationFrame(update);
 }
 
+function saveHighScore(newScore, name) {
+    // Check if the player is already in the high scores
+    let existingPlayer = highScores.find(entry => entry.name === name);
+    if (existingPlayer) {
+        // Update the score if the new score is higher
+        if (newScore > existingPlayer.score) {
+            existingPlayer.score = newScore;
+        }
+    } else {
+        // Add a new player to the high scores
+        highScores.push({ score: newScore, name: name });
+    }
+
+    // Sort and keep up to 10 scores
+    highScores.sort((a, b) => b.score - a.score);
+    highScores = highScores.slice(0, 10); // Keep up to 10 scores
+    localStorage.setItem('highScores', JSON.stringify(highScores));
+}
+
+function updateLeaderboard() {
+    leaderboard.innerHTML = '<h2>Leaderboard</h2>';
+    highScores.forEach((entry, index) => {
+        if (index < 10) { // Only display up to 10 entries
+            const scoreElement = document.createElement('div');
+            scoreElement.textContent = `${index + 1}. ${entry.name}: ${entry.score}`;
+            leaderboard.appendChild(scoreElement);
+        }
+    });
+}
+
 document.addEventListener('keydown', (e) => {
     if (e.code === 'Space' && player.grounded) {
         player.dy = player.jumpPower;
@@ -139,7 +177,17 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+function startGame() {
+    playerName = nameInput.value.trim() || 'Anonymous'; // Ensure the player name is trimmed and not empty
+    nameInputContainer.style.display = 'none';
+    canvas.style.display = 'block';
+    initializeGame();
+    update();
+}
+
 function restartGame() {
+    nameInputContainer.style.display = 'none';
+    canvas.style.display = 'block';
     initializeGame();
     update();
 }
@@ -164,6 +212,11 @@ function toggleBgMusic() {
     }
 }
 
-// Initialize the game and start the update loop
-initializeGame();
-update();
+function resetLeaderboard() {
+    highScores = [];
+    localStorage.setItem('highScores', JSON.stringify(highScores));
+    updateLeaderboard();
+}
+
+// Initialize the leaderboard
+updateLeaderboard();
