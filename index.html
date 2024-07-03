@@ -169,6 +169,9 @@
         let playerHeight = 50; // Höhe des Spielers
         let playerSpeedX = 5; // Geschwindigkeit des Spielers
 
+        // Hindernisse
+        let obstacles = [];
+
         // Event Listener für den Start-Button
         const startButton = document.getElementById('startButton');
         startButton.addEventListener('click', startGame);
@@ -186,14 +189,30 @@
             score = 0;
             scoreDisplay.textContent = `Score: ${score}`;
             gameOverOverlay.style.display = 'none';
-            // Weitere Initialisierungen für das Spiel hier...
+            obstacles = []; // Hindernisse zurücksetzen
+            createObstacles(); // Hindernisse erstellen
+        }
+
+        // Funktion zum Erstellen der Hindernisse
+        function createObstacles() {
+            // Beispiel: Erzeuge drei Hindernisse
+            for (let i = 0; i < 3; i++) {
+                let obstacle = {
+                    x: 600 + i * 200, // Startposition X des Hindernisses
+                    y: 300, // Startposition Y des Hindernisses
+                    width: 50, // Breite des Hindernisses
+                    height: 50 // Höhe des Hindernisses
+                };
+                obstacles.push(obstacle);
+            }
         }
 
         // Funktion zum Aktualisieren des Spiels
         function update() {
             // Logik für das Spiel-Update hier...
             movePlayer();
-            drawPlayer();
+            moveObstacles();
+            draw();
             requestAnimationFrame(update);
         }
 
@@ -206,11 +225,28 @@
             }
         }
 
-        // Funktion zum Zeichnen des Spielers
-        function drawPlayer() {
+        // Funktion zum Bewegen der Hindernisse
+        function moveObstacles() {
+            for (let obstacle of obstacles) {
+                obstacle.x -= playerSpeedX;
+                if (obstacle.x + obstacle.width < 0) {
+                    // Wenn Hindernis aus dem Bildschirm, zurücksetzen
+                    obstacle.x = canvas.width + Math.random() * 200;
+                }
+            }
+        }
+
+        // Funktion zum Zeichnen des Spielers und der Hindernisse
+        function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Zeichne Spieler
             ctx.fillStyle = 'blue';
             ctx.fillRect(playerX, playerY, playerWidth, playerHeight);
+            // Zeichne Hindernisse
+            ctx.fillStyle = 'red';
+            for (let obstacle of obstacles) {
+                ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+            }
         }
 
         // Funktion zum Neustarten des Spiels
