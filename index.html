@@ -83,7 +83,7 @@
             color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
         }
-        #leaderboard {
+        #leaderboardContainer {
             position: absolute;
             top: 50%;
             left: 10px;
@@ -93,6 +93,13 @@
             padding: 10px;
             border-radius: 10px;
             width: 200px;
+        }
+        #leaderboardList {
+            list-style-type: none;
+            padding: 0;
+        }
+        #leaderboardList li {
+            margin-bottom: 5px;
         }
         #nameInputContainer {
             display: flex;
@@ -109,24 +116,14 @@
             font-size: 16px;
             cursor: pointer;
         }
-        #leaderboardContainer {
-    margin-top: 20px;
-    border: 2px solid black;
-    padding: 10px;
-    max-width: 300px;
-    background-color: #f0f0f0;
-    border-radius: 5px;
-}
-
-#leaderboardList {
-    list-style-type: none;
-    padding: 0;
-}
-
-#leaderboardList li {
-    margin-bottom: 5px;
-}
-
+        #leaderboard {
+            margin-top: 20px;
+            border: 2px solid black;
+            padding: 10px;
+            max-width: 300px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -140,16 +137,15 @@
         <p id="highScore"></p>
         <button onclick="restartGame()">Weiter spielen</button>
     </div>
-<div id="leaderboardContainer">
-    <h2>Leaderboard</h2>
-    <ol id="leaderboardList">
-        <!-- Hier werden die Einträge des Leaderboards dynamisch eingefügt -->
-    </ol>
-</div>
+    <div id="leaderboardContainer">
+        <h2>Leaderboard</h2>
+        <ol id="leaderboardList">
+            <!-- Hier werden die Einträge des Leaderboards dynamisch eingefügt -->
+        </ol>
+    </div>
     <div id="nameInputContainer">
-<input type="text" id="nameInput" placeholder="Dein Name">
-<button id="startButton">Start</button>
-
+        <input type="text" id="nameInput" placeholder="Dein Name">
+        <button id="startButton">Start</button>
     </div>
     <div class="soundControls">
         <button id="jumpSoundToggle" class="soundToggle" onclick="toggleJumpSound()">Jump Sound: An</button>
@@ -160,7 +156,91 @@
     <audio id="jumpSound" src="jump.mp3"></audio>
     <audio id="gameOverSound" src="gameover.mp3"></audio>
     <audio id="bgMusic" src="backround_Music.mp3" loop></audio>
-    <script src="main.js"></script>
-    <script src="server.js"></script>
+
+    <script>
+        // JavaScript für das Spiel und das Leaderboard
+
+        // Variablen für das Spiel
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreDisplay = document.getElementById('score');
+        const gameOverOverlay = document.getElementById('gameOver');
+        const currentScoreDisplay = document.getElementById('currentScore');
+        const highScoreDisplay = document.getElementById('highScore');
+        const speedDisplay = document.getElementById('speedDisplay');
+        const leaderboardList = document.getElementById('leaderboardList');
+
+        let playerName = '';
+        let score = 0;
+        let highScore = 0;
+
+        // Event Listener für den Start-Button
+        const startButton = document.getElementById('startButton');
+        startButton.addEventListener('click', startGame);
+
+        function startGame() {
+            playerName = nameInput.value.trim() || 'Anonymous';
+            nameInputContainer.style.display = 'none';
+            canvas.style.display = 'block';
+            initializeGame();
+            update();
+        }
+
+        // Funktion zum Initialisieren des Spiels
+        function initializeGame() {
+            score = 0;
+            scoreDisplay.textContent = `Score: ${score}`;
+            gameOverOverlay.style.display = 'none';
+            // Weitere Initialisierungen für das Spiel hier...
+        }
+
+        // Funktion zum Aktualisieren des Spiels
+        function update() {
+            // Logik für das Spiel-Update hier...
+            requestAnimationFrame(update);
+        }
+
+        // Funktion zum Neustarten des Spiels
+        function restartGame() {
+            initializeGame();
+            update();
+        }
+
+        // Beispiel für eine Funktion zum Hinzufügen von Einträgen ins Leaderboard
+        function addToLeaderboard(name, score) {
+            const entry = document.createElement('li');
+            entry.textContent = `${name}: ${score}`;
+            leaderboardList.appendChild(entry);
+        }
+
+        // Beispiel für eine Funktion zum Laden des Leaderboards
+        function loadLeaderboard() {
+            // Hier würdest du normalerweise das Leaderboard aus einer Datenquelle laden
+            // In diesem Beispiel wird ein statisches Leaderboard verwendet
+            addToLeaderboard('Max', 50);
+            addToLeaderboard('Anna', 40);
+            addToLeaderboard('Tom', 30);
+            addToLeaderboard('Lisa', 20);
+            addToLeaderboard('Ben', 10);
+        }
+
+        // Beispielaufruf zum Laden des Leaderboards
+        loadLeaderboard();
+
+        // Beispiel für weitere Funktionen, z.B. Soundsteuerung, Kollisionserkennung, etc.
+
+        // Funktionen für die Soundsteuerung, Kollisionserkennung, etc.
+        function toggleJumpSound() {
+            // Implementierung der Funktion hier...
+        }
+
+        function toggleGameOverSound() {
+            // Implementierung der Funktion hier...
+        }
+
+        function toggleBgMusic() {
+            // Implementierung der Funktion hier...
+        }
+    </script>
 </body>
 </html>
